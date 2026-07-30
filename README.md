@@ -26,11 +26,13 @@ Faux relies fundamentally on three capabilities that traditional EVM smart contr
 
 ## 3. System Architecture
 
-Faux consists of three interconnected Intelligent Contracts on GenLayer **studionet**:
+Faux consists of five interconnected Intelligent Contracts on GenLayer **studionet**:
 
-- **`FauxCore` (`contracts/faux_core.py`):** Handles case creation, community staking, non-deterministic AI adjudication, and payout execution.
+- **`FauxCore` (`contracts/faux_core.py`):** Handles case creation, community staking, non-deterministic multi-perspective AI adjudication, and payout execution.
 - **`FauxTreasury` (`contracts/faux_treasury.py`):** Securely holds escrowed GEN funds, collects a 2% protocol fee, and emits payouts.
-- **`FauxReputation` (`contracts/faux_reputation.py`):** Tracks accuracy metrics for stakers and maintains the leaderboard.
+- **`FauxReputation` (`contracts/faux_reputation.py`):** Tracks accuracy metrics for stakers, reputation tiers (Bronze/Silver/Gold/Diamond), and tiered fee discounts.
+- **`FauxAppeal` (`contracts/faux_appeal.py`):** Handles community case dispute appeals.
+- **`FauxBadges` (`contracts/faux_badges.py`):** Mints on-chain Soulbound Badges for staker achievements.
 
 For complete sequence diagrams and data flow details, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
@@ -48,6 +50,8 @@ Faux is deployed on **GenLayer studionet** via [GenLayer Studio](https://studio.
    - `contracts/faux_treasury.py`
    - `contracts/faux_reputation.py`
    - `contracts/faux_core.py`
+   - `contracts/faux_appeal.py`
+   - `contracts/faux_badges.py`
 4. Inspect each transaction sidebar to verify **`Result: SUCCESS`** (ensure `Status: FINALIZED` is paired with `Result: SUCCESS`).
 5. Execute `Core.set_dependencies(treasury_address, reputation_address)` once to link the contracts.
 6. Copy the deployed contract addresses into `frontend/.env`:
@@ -77,7 +81,7 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:5173`. Ensure your MetaMask wallet is connected to **GenLayer Studio Network** (`studionet`, Chain ID `61999` / `0xF1EF`) and funded with GEN tokens from the **Accounts** panel in GenLayer Studio.
+Visit `http://localhost:5173` or live production dApp at `https://faux-genlayer.vercel.app`. Ensure your MetaMask wallet is connected to **GenLayer Studio Network** (`studionet`, Chain ID `61999` / `0xF1EF`) and funded with GEN tokens from the **Accounts** panel in GenLayer Studio.
 
 ---
 
