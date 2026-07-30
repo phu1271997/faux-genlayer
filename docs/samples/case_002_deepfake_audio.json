@@ -1,0 +1,8 @@
+{
+  "id": "case-sample-2",
+  "media_url": "https://images.unsplash.com/photo-1541701494587-cb58502866ab",
+  "description": "Synthesized voice recording containing neural model boundary noise.",
+  "initial_side": "CLAIM_FAKE",
+  "expected_verdict": "FAKE",
+  "expected_confidence": 95
+}

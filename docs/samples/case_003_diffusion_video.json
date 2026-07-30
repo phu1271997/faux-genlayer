@@ -1,0 +1,8 @@
+{
+  "id": "case-sample-3",
+  "media_url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485",
+  "description": "AI diffusion video clip featuring background temporal flicker.",
+  "initial_side": "CLAIM_FAKE",
+  "expected_verdict": "FAKE",
+  "expected_confidence": 88
+}
