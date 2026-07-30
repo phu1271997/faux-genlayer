@@ -1,0 +1,15 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: FauxCore
+    network: studionet
+    source:
+      address: "0xdB2465BC1F7D148e4078892C9dC679a45CBC03fD"
+      abi: FauxCore
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
