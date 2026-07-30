@@ -1,7 +1,9 @@
+const env = (import.meta as any).env || {};
+
 export const CONTRACT_ADDRESSES = {
-  CORE: import.meta.env.VITE_CONTRACT_CORE_ADDR || '0x0000000000000000000000000000000000000000',
-  TREASURY: import.meta.env.VITE_CONTRACT_TREASURY_ADDR || '0x0000000000000000000000000000000000000000',
-  REPUTATION: import.meta.env.VITE_CONTRACT_REPUTATION_ADDR || '0x0000000000000000000000000000000000000000',
+  CORE: env.VITE_CONTRACT_CORE_ADDR || '0xdB2465BC1F7D148e4078892C9dC679a45CBC03fD',
+  TREASURY: env.VITE_CONTRACT_TREASURY_ADDR || '0x4318EC4C34d5D7CB6d73686a5e8514F7BA3e203e',
+  REPUTATION: env.VITE_CONTRACT_REPUTATION_ADDR || '0x71cB013F7a4c0C09769Ebfd77b27F080ca147462',
 };
 
 export interface CaseData {
@@ -40,8 +42,8 @@ export const DEMO_MOCK_CASES: CaseData[] = [
     verdict_side: '',
     confidence: 0,
     reason: '',
-    total_fake: 250000000000000000000, // 250 GEN
-    total_real: 120000000000000000000  // 120 GEN
+    total_fake: 250000000000000000000,
+    total_real: 120000000000000000000
   },
   {
     id: 'case-2',
@@ -59,8 +61,8 @@ export const DEMO_MOCK_CASES: CaseData[] = [
     verdict_side: 'CLAIM_REAL',
     confidence: 91,
     reason: 'Verified against official SEC EDGAR filings and matching video stream timestamps from authentic broadcast feeds.',
-    total_fake: 50000000000000000000,  // 50 GEN
-    total_real: 350000000000000000000  // 350 GEN
+    total_fake: 50000000000000000000,
+    total_real: 350000000000000000000
   },
   {
     id: 'case-3',
@@ -78,7 +80,7 @@ export const DEMO_MOCK_CASES: CaseData[] = [
     verdict_side: 'CLAIM_FAKE',
     confidence: 94,
     reason: 'Forensic spectrogram analysis identified consistent 16kHz neural synthesis boundary artifacts typical of ElevenLabs v2 voice models.',
-    total_fake: 500000000000000000000, // 500 GEN
-    total_real: 80000000000000000000   // 80 GEN
+    total_fake: 500000000000000000000,
+    total_real: 80000000000000000000
   }
 ];

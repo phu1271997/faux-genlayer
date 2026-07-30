@@ -52,9 +52,9 @@ Faux is deployed on **GenLayer studionet** via [GenLayer Studio](https://studio.
 5. Execute `Core.set_dependencies(treasury_address, reputation_address)` once to link the contracts.
 6. Copy the deployed contract addresses into `frontend/.env`:
    ```env
-   VITE_CONTRACT_CORE_ADDR=0x...
-   VITE_CONTRACT_TREASURY_ADDR=0x...
-   VITE_CONTRACT_REPUTATION_ADDR=0x...
+   VITE_CONTRACT_CORE_ADDR=0xdB2465BC1F7D148e4078892C9dC679a45CBC03fD
+   VITE_CONTRACT_TREASURY_ADDR=0x4318EC4C34d5D7CB6d73686a5e8514F7BA3e203e
+   VITE_CONTRACT_REPUTATION_ADDR=0x71cB013F7a4c0C09769Ebfd77b27F080ca147462
    ```
 
 ---
@@ -63,9 +63,9 @@ Faux is deployed on **GenLayer studionet** via [GenLayer Studio](https://studio.
 
 | Contract | Network | Address | Explorer Link |
 |---|---|---|---|
-| **FauxCore** | GenLayer studionet | `TBD` | `https://genlayer-explorer.vercel.app` |
-| **FauxTreasury** | GenLayer studionet | `TBD` | `https://genlayer-explorer.vercel.app` |
-| **FauxReputation** | GenLayer studionet | `TBD` | `https://genlayer-explorer.vercel.app` |
+| **FauxCore** | GenLayer studionet | `0xdB2465BC1F7D148e4078892C9dC679a45CBC03fD` | [GenLayer Explorer](https://genlayer-explorer.vercel.app) |
+| **FauxTreasury** | GenLayer studionet | `0x4318EC4C34d5D7CB6d73686a5e8514F7BA3e203e` | [GenLayer Explorer](https://genlayer-explorer.vercel.app) |
+| **FauxReputation** | GenLayer studionet | `0x71cB013F7a4c0C09769Ebfd77b27F080ca147462` | [GenLayer Explorer](https://genlayer-explorer.vercel.app) |
 
 ---
 

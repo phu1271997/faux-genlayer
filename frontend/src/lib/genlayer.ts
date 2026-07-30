@@ -1,7 +1,7 @@
 import { createClient } from 'genlayer-js';
-import { studionet } from 'genlayer-js/chains';
+import { simulator } from 'genlayer-js/chains';
 
-export const STUDIONET_CHAIN = studionet;
+export const STUDIONET_CHAIN = simulator;
 
 export interface WalletState {
   address: string | null;
@@ -28,7 +28,7 @@ export async function connectStudionetWallet(): Promise<{ client: any; address: 
   const address = accounts[0];
 
   // 2. Switch or add GenLayer Studionet network dynamically (R23)
-  const chainIdHex = '0x' + STUDIONET_CHAIN.id.toString(16); // 61999 = 0xF1EF
+  const chainIdHex = '0x' + (STUDIONET_CHAIN.id || 61999).toString(16); // 61999 = 0xF1EF
 
   try {
     await window.ethereum.request({
@@ -56,8 +56,8 @@ export async function connectStudionetWallet(): Promise<{ client: any; address: 
 
   // 3. Initialize genlayer-js client with the ADDRESS STRING (MetaMask signs - R22)
   const client = createClient({
-    chain: STUDIONET_CHAIN,
-    account: address,
+    chain: STUDIONET_CHAIN as any,
+    account: address as any,
   });
 
   return { client, address };
