@@ -52,7 +52,6 @@ class Contract(gl.Contract):
         new_total_cases = current.total_cases + bigint(1)
         new_total_staked = current.total_staked + stake_amount
         
-        # Calculate accuracy in basis points (0..10000)
         acc_int = (int(new_correct) * 10000) // int(new_total_cases)
         new_acc_bp = u16(acc_int)
 
@@ -66,6 +65,30 @@ class Contract(gl.Contract):
         )
 
     @gl.public.view
+    def get_tier(self, staker: str) -> str:
+        if staker not in self.stats:
+            return "BRONZE"
+        acc = int(self.stats[staker].accuracy_bp)
+        if acc >= 8500:
+            return "DIAMOND"
+        elif acc >= 7000:
+            return "GOLD"
+        elif acc >= 5000:
+            return "SILVER"
+        return "BRONZE"
+
+    @gl.public.view
+    def get_effective_fee_bp(self, staker: str) -> u16:
+        tier = self.get_tier(staker)
+        if tier == "DIAMOND":
+            return u16(50)   # 0.5%
+        elif tier == "GOLD":
+            return u16(100)  # 1.0%
+        elif tier == "SILVER":
+            return u16(150)  # 1.5%
+        return u16(200)      # 2.0% (BRONZE)
+
+    @gl.public.view
     def get_stats(self, staker: str) -> dict:
         if staker not in self.stats:
             return {
@@ -74,16 +97,22 @@ class Contract(gl.Contract):
                 "wrong": 0,
                 "total_cases": 0,
                 "accuracy_bp": 0,
-                "total_staked": 0
+                "total_staked": 0,
+                "tier": "BRONZE",
+                "fee_bp": 200
             }
         s = self.stats[staker]
+        tier = self.get_tier(staker)
+        fee_bp = int(self.get_effective_fee_bp(staker))
         return {
             "staker": s.staker,
             "correct": int(s.correct),
             "wrong": int(s.wrong),
             "total_cases": int(s.total_cases),
             "accuracy_bp": int(s.accuracy_bp),
-            "total_staked": int(s.total_staked)
+            "total_staked": int(s.total_staked),
+            "tier": tier,
+            "fee_bp": fee_bp
         }
 
     @gl.public.view
