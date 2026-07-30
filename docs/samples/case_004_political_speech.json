@@ -1,0 +1,8 @@
+{
+  "id": "case-sample-4",
+  "media_url": "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c",
+  "description": "Viral political speech video alleged to be synthesized using audio cloning software.",
+  "initial_side": "CLAIM_FAKE",
+  "expected_verdict": "FAKE",
+  "expected_confidence": 96
+}
