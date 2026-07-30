@@ -19,18 +19,18 @@ class Contract(gl.Contract):
     registered_stakers: DynArray[str]
 
     def __init__(self):
-        self.owner = gl.message.sender
-        self.core_address = gl.message.sender
+        self.owner = gl.message.sender_address
+        self.core_address = gl.message.sender_address
 
     @gl.public.write
     def set_core(self, core: Address) -> None:
-        if gl.message.sender != self.owner:
+        if gl.message.sender_address != self.owner:
             raise UserError("only owner can set core address")
         self.core_address = core
 
     @gl.public.write
     def record_outcome(self, staker: str, was_correct: bool, stake_amount: bigint) -> None:
-        if gl.message.sender != self.core_address:
+        if gl.message.sender_address != self.core_address:
             raise UserError("only core contract can record outcome")
         
         is_new = staker not in self.stats

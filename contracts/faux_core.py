@@ -56,14 +56,14 @@ class Contract(gl.Contract):
     case_stakers: TreeMap[str, DynArray[str]]
 
     def __init__(self):
-        self.owner = gl.message.sender
-        self.treasury_address = gl.message.sender
-        self.reputation_address = gl.message.sender
+        self.owner = gl.message.sender_address
+        self.treasury_address = gl.message.sender_address
+        self.reputation_address = gl.message.sender_address
         self.case_counter = bigint(0)
 
     @gl.public.write
     def set_dependencies(self, treasury: Address, reputation: Address) -> None:
-        if gl.message.sender != self.owner:
+        if gl.message.sender_address != self.owner:
             raise UserError("only owner can set dependencies")
         self.treasury_address = treasury
         self.reputation_address = reputation
@@ -88,8 +88,8 @@ class Contract(gl.Contract):
 
         self.case_counter = self.case_counter + bigint(1)
         case_id = f"case-{int(self.case_counter)}"
-        submitter_str = _addr_str(gl.message.sender)
-        now_ts = u64(0)  # GenVM runtime environment auto-provides timestamp where needed
+        submitter_str = _addr_str(gl.message.sender_address)
+        now_ts = u64(0)
 
         total_fake = gl.message.value if initial_side == "CLAIM_FAKE" else bigint(0)
         total_real = gl.message.value if initial_side == "CLAIM_REAL" else bigint(0)
@@ -127,7 +127,6 @@ class Contract(gl.Contract):
         stakers_list.append(submitter_str)
         self.case_stakers[case_id] = stakers_list
 
-        # Forward deposit to treasury
         ITreasury(self.treasury_address).deposit_for_case(case_id, value=gl.message.value)
         return case_id
 
@@ -144,7 +143,7 @@ class Contract(gl.Contract):
         if gl.message.value == bigint(0):
             raise UserError("stake amount must be > 0")
 
-        staker_str = _addr_str(gl.message.sender)
+        staker_str = _addr_str(gl.message.sender_address)
         stake_key = f"{case_id}:{staker_str}"
 
         if stake_key in self.stakes:
@@ -307,7 +306,6 @@ RESPOND WITH VALID JSON ONLY, NO PREAMBLE:
     def _resolve_case_settled(self, case_id: str, verdict: str, verdict_side: str, confidence: u8, reason: str) -> None:
         c = self.cases[case_id]
         
-        # Deduct 2% protocol fee
         total_pool = c.total_fake + c.total_real
         fee_amount = (total_pool * bigint(200)) // bigint(10000)
         
@@ -332,7 +330,6 @@ RESPOND WITH VALID JSON ONLY, NO PREAMBLE:
             total_real=c.total_real
         )
 
-        # Record reputation for all stakers
         if case_id in self.case_stakers:
             for staker_addr in self.case_stakers[case_id]:
                 stake_key = f"{case_id}:{staker_addr}"
@@ -351,7 +348,7 @@ RESPOND WITH VALID JSON ONLY, NO PREAMBLE:
             raise UserError("case not found")
         
         c = self.cases[case_id]
-        staker_str = _addr_str(gl.message.sender)
+        staker_str = _addr_str(gl.message.sender_address)
         stake_key = f"{case_id}:{staker_str}"
 
         if stake_key not in self.stakes:
@@ -362,7 +359,6 @@ RESPOND WITH VALID JSON ONLY, NO PREAMBLE:
             raise UserError("stake payout already claimed")
 
         if c.status == "REFUNDED":
-            # Refund exact stake amount
             payout_amount = stk.amount
         elif c.status == "RESOLVED":
             if stk.side != c.verdict_side:
@@ -386,7 +382,7 @@ RESPOND WITH VALID JSON ONLY, NO PREAMBLE:
             claimed=True
         )
 
-        ITreasury(self.treasury_address).pay_out(case_id, gl.message.sender, payout_amount)
+        ITreasury(self.treasury_address).pay_out(case_id, gl.message.sender_address, payout_amount)
 
     @gl.public.view
     def get_case(self, case_id: str) -> dict:

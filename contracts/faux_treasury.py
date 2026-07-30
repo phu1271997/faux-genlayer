@@ -8,19 +8,19 @@ class Contract(gl.Contract):
     protocol_fees_collected: bigint
 
     def __init__(self):
-        self.owner = gl.message.sender
-        self.core_address = gl.message.sender
+        self.owner = gl.message.sender_address
+        self.core_address = gl.message.sender_address
         self.protocol_fees_collected = bigint(0)
 
     @gl.public.write
     def set_core(self, core: Address) -> None:
-        if gl.message.sender != self.owner:
+        if gl.message.sender_address != self.owner:
             raise UserError("only owner can set core address")
         self.core_address = core
 
     @gl.public.write.payable
     def deposit_for_case(self, case_id: str) -> None:
-        if gl.message.sender != self.core_address:
+        if gl.message.sender_address != self.core_address:
             raise UserError("only core contract can deposit for case")
         
         current_bal = self.case_balances.get(case_id, bigint(0))
@@ -28,7 +28,7 @@ class Contract(gl.Contract):
 
     @gl.public.write
     def pay_out(self, case_id: str, recipient: Address, amount: bigint) -> None:
-        if gl.message.sender != self.core_address:
+        if gl.message.sender_address != self.core_address:
             raise UserError("only core contract can trigger payout")
         
         current_bal = self.case_balances.get(case_id, bigint(0))
@@ -40,7 +40,7 @@ class Contract(gl.Contract):
 
     @gl.public.write
     def collect_fee(self, case_id: str, fee_amount: bigint) -> None:
-        if gl.message.sender != self.core_address:
+        if gl.message.sender_address != self.core_address:
             raise UserError("only core contract can collect fee")
         
         current_bal = self.case_balances.get(case_id, bigint(0))
