@@ -1,0 +1,32 @@
+type Case @entity {
+  id: ID!
+  submitter: Bytes!
+  media_url: String!
+  description: String!
+  status: String!
+  verdict: String
+  confidence: Int
+  reason: String
+  total_fake: BigInt!
+  total_real: BigInt!
+  created_at: BigInt!
+}
+
+type Stake @entity {
+  id: ID!
+  case_id: String!
+  staker: Bytes!
+  side: String!
+  amount: BigInt!
+  claimed: Boolean!
+}
+
+type StakerStats @entity {
+  id: ID!
+  staker: Bytes!
+  correct: BigInt!
+  wrong: BigInt!
+  total_cases: BigInt!
+  accuracy_bp: Int!
+  tier: String!
+}
